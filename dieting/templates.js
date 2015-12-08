@@ -1,7 +1,7 @@
 var handlebars = require('handlebars')
 
 function Templater () {
-    this._landing = handlebars.compile('<div>home: {{title}}</div>')
+    this._landing = handlebars.compile('<title>home: {{title}}</title>')
     handlebars.registerHelper('list', function (agents, options) {
         var out = '<ul>'
         for (var key in Object.keys(agents)) {
@@ -16,7 +16,7 @@ function Templater () {
 }
 
 Templater.prototype.home = function (title) {
-    var title = title || 'Welcome to the Dieting board!'
+    var title = title ? title : 'Welcome to the Dieting board!'
     return this._landing({title: title})
 }
 
