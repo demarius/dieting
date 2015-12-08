@@ -2,21 +2,26 @@ var server = require('diet')
 var cadence = require('cadence')
 var fnv = require('b-tree/benchmark/fnv')
 var socket = require('socket.io')
-var templater = require('./dieting/templates')
+var templater = require('./templates')
 
 function Dieting () {
     this.app = server()
-    this.app.listen('http://localhost:8000')
     this.agents = {}
     this.io = new socket()
-    this.templates = new templater()
+}
 
+Dieting.prototype.init = cadence(function (async) {
+    this.app.listen('http://localhost:8000')
     this.app.get('/:title', this.index.bind(this))
-    this.app.get('/title/:title', this.index.bind(this))
     this.app.get('/user/:username', this.newAgent.bind(this))
     this.app.get('/users/', this.list.bind(this))
     this.app.post('/user/:drawing', this.update.bind(this))
-}
+
+    async(function () {
+        this.templates = new templater()
+        this.templates.init(async())
+    })
+})
 
 Dieting.prototype.index = function ($) {
     $.end(this.templates.home($.params.title))
@@ -51,12 +56,14 @@ Dieting.prototype.color = function (key) {
     return color
 }
 
-Dieting.prototype.update = function ($) {
-    io.emit($.param.username, {
-        color: this.agents[$.param.username].color,
-        drawing: {}
+Dieting.prototype.update = cadence(function (async, $) {
+    async(function () {
+        io.emit($.param.username, {
+            color: this.agents[$.param.username].color,
+            drawing: {}
+        })
     })
-}
+})
 
 Dieting.prototype.list = function ($) {
     $.end(this.templates.list(this.agents))
