@@ -31,10 +31,10 @@ Dieting.prototype.newAgent = function ($) {
     if (Object.keys(this.agents).indexOf($.params.username) < 0) {
         this.agents[$.params.username] = {
             // need endpoint
+            host: $.url.hostname,
             color: this.color($.params.username)
         }
     }
-
     $.end(this.agents[$.params.username].color)
 }
 

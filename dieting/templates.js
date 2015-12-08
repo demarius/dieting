@@ -4,7 +4,8 @@ var cadence = require('cadence')
 
 function Templater () {
     this._landing = '<html><head> <title>{{title}}</title> </head> <body>\
-<canvas id="board" resize></canvas> </body>'
+<canvas id="board" resize></canvas> </body>' // just in case `index.hbs` doesn't
+// come home tonight
 
     handlebars.registerHelper('list_users', function (agents, options) {
         var out = '<ul>'
