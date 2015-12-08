@@ -10,8 +10,8 @@ function Dieting () {
     this.io = new socket()
 }
 
-Dieting.prototype.init = cadence(function (async) {
-    this.app.listen('http://localhost:8000')
+Dieting.prototype.init = cadence(function (async, url) {
+    this.app.listen(url)
     this.app.get('/:title', this.index.bind(this))
     this.app.get('/user/:username', this.newAgent.bind(this))
     this.app.get('/users/', this.list.bind(this))

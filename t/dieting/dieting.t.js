@@ -7,7 +7,7 @@ function prove (async, assert) {
     diet = new diet.Dieting()
 
     async(function () {
-        diet.init(async())
+        diet.init('http://localhost:8000', async())
     }, function () {
         ua.fetch({
         url: 'http://localhost:8000/blah'}, async())
