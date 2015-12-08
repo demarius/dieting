@@ -8,10 +8,12 @@ function prove (async, assert) {
 
     async(function () {
         ua.fetch({
-        url: 'http://localhost:8000/blah'}, async())
+        url: 'http://localhost:8000/title/blah'}, async())
     }, function (body, res) {
-        console.log(body.toString())
+        assert(body.toString(), '<title>home: blah</title>', 'set title')
+        ua.fetch({
+        url: 'http://localhost:8000/user/borkendogschliefenewfipnepw'}, async())
+    }, function (body, res) {
+        assert(body.toString(), '#a3', 'got hex')
     })
-    assert(true, 'true')
-    assert(true, 'true')
 }

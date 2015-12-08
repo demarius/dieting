@@ -12,25 +12,25 @@ function Dieting () {
     this.templates = new templater()
 
     this.app.get('/:title', this.index.bind(this))
-    this.app.get('user/:username', this.newAgent.bind(this))
+    this.app.get('/title/:title', this.index.bind(this))
+    this.app.get('/user/:username', this.newAgent.bind(this))
     this.app.get('/users/', this.list.bind(this))
     this.app.post('/user/:drawing', this.update.bind(this))
 }
 
 Dieting.prototype.index = function ($) {
-    var home = this.templates.home($.title)
-    $.end(home)
+    $.end(this.templates.home($.params.title))
 }
 
 Dieting.prototype.newAgent = function ($) {
-    if (Object.keys(this.agents).indexOf($.username) < 0) {
-        this.agents[$.username] = {
+    if (Object.keys(this.agents).indexOf($.params.username) < 0) {
+        this.agents[$.params.username] = {
             // need endpoint
-            color: this.color($.username)
+            color: this.color($.params.username)
         }
     }
 
-    $.end(this.agents[$.username].color)
+    $.end(this.agents[$.params.username].color)
 }
 
 Dieting.prototype.color = function (key) {
@@ -42,16 +42,17 @@ Dieting.prototype.color = function (key) {
         var hex = c.toString(16);
             return hex.length == 1 ? "0" + hex : hex;
     }
-    length = Math.floor(length / 2)
-    while (length-- > 0) {
+    length = Math.floor(key.length / 2)
+    while (length > 1) {
         color += componentToHex(key.readUIntLE(length - 1, 1))
         //key is sorta flipped here. still unique.
+        length--
     }
     return color
 }
 
 Dieting.prototype.update = function ($) {
-    io.emit($.username, {
+    io.emit($.param.username, {
         color: this.agents[$.username].color,
         drawing: {}
     })
