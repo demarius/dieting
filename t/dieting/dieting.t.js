@@ -8,7 +8,7 @@ function prove (async, assert) {
 
     async(function () {
         ua.fetch({
-        url: 'http://localhost:8000/title/blah'}, async())
+        url: 'http://localhost:8000/blah'}, async())
     }, function (body, res) {
         assert(body.toString(), '<title>home: blah</title>', 'set title')
         ua.fetch({

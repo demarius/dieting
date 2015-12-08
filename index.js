@@ -45,7 +45,7 @@ Dieting.prototype.color = function (key) {
     length = Math.floor(key.length / 2)
     while (length > 1) {
         color += componentToHex(key.readUIntLE(length - 1, 1))
-        //key is sorta flipped here. still unique.
+        //key hash is taken backwards here for ease. still unique.
         length--
     }
     return color
@@ -53,7 +53,7 @@ Dieting.prototype.color = function (key) {
 
 Dieting.prototype.update = function ($) {
     io.emit($.param.username, {
-        color: this.agents[$.username].color,
+        color: this.agents[$.param.username].color,
         drawing: {}
     })
 }
