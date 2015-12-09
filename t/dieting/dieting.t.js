@@ -2,9 +2,7 @@ require('proof')(2, require('cadence')(prove))
 
 function prove (async, assert) {
     var diet = require('../../dieting/dieting')
-    var ua = require('vizsla')
-    ua = new ua()
-    diet = new diet.Dieting()
+    var ua = require('vizsla'), ua = new ua(), diet = new diet.Dieting()
 
     async(function () {
         diet.init('http://localhost:8000', async())

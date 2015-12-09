@@ -1,9 +1,70 @@
 <html>
 <head>
-<title>too</title>
-<script type="text/javascript" src="../lib/paper-full.min.js"></script>
-<script type="text/javascript" src="../js/board.js"></script>
+<title>{{title}}</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript"
+src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.25/paper-core.js"></script>
+<script type="text/javascript" src="{{url}}/socket.io/socket.io.js"></script>
+<script>
+paper.install(window)
+window.onload = function () {
+    var canvas = document.getElementById('board')
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    paper.setup(canvas)
+    var path = new paper.Path(), tool = new Tool()
+    var start = new paper.Point(100, 100), socket = io()
+
+    var nativeDraw = function (ev) {
+        socket.emit('drawing', {
+            move: ev.point,
+            color: path.strokeColor
+        })
+        path.lineTo(ev.point)
+        paper.view.draw();
+        path.moveTo = ev.point
+    }
+
+    var banditDraw = function (ev, color) {
+        var native_color = path.strokeColor
+        path.strokeColor = color
+        path.lineTo(ev.point)
+        paper.view.draw();
+        path.moveTo = ev.point
+        path.strokeColor = native_color
+    }
+
+    socket.on('drawing', function (art) {
+        banditDraw(art.ev, art.color)
+    })
+
+    $('.welcome button').on('click', function () {
+        var username = $('.welcome input').val() || 'anon'
+        $('.welcome').remove()
+        if (username == 'anon') {
+            path.strokeColor = 'black'
+            // black, no socket
+        } else {
+            $.ajax('/user/' + username, {
+                data: {
+                    username: username
+                },
+                success: function (data) {
+                    path.strokeColor = data.color
+                }
+            })
+        }
+        path.moveTo(start)
+        tool.onMouseMove = nativeDraw
+    })
+}
+</script>
 </head>
 <body>
+    <div class='welcome'>
+        <label>Username: <input type="text" name="username" /></label>
+        <button>Start</button>
+    </div>
     <canvas id="board" resize></canvas>
 </body>
+</html>

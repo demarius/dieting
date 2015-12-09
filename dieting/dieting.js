@@ -1,33 +1,36 @@
 var server = require('diet')
 var cadence = require('cadence')
 var fnv = require('b-tree/benchmark/fnv')
-var socket = require('socket.io')
 var templater = require('./templates')
 
 function Dieting () {
     this.app = server()
     this.agents = {}
-    this.io = new socket()
 }
 
 Dieting.prototype.init = cadence(function (async, url) {
     this.app.listen(url)
+    this.io = require('socket.io')(this.app.server)
+    this.app.get('/', function ($) {
+        $.redirect('/switchedOn')
+    })
     this.app.get('/:title', this.index.bind(this))
     this.app.get('/user/:username', this.newAgent.bind(this))
     this.app.get('/users/', this.list.bind(this))
     this.app.post('/user/:drawing', this.update.bind(this))
 
     async(function () {
-        this.templates = new templater()
+        this.templates = new templater(url)
         this.templates.init(async())
     })
 })
 
 Dieting.prototype.index = function ($) {
-    $.end(this.templates.home($.params.title))
+    $.html(this.templates.home($.params.title))
 }
 
 Dieting.prototype.newAgent = function ($) {
+    //need to use socket instead
     if (Object.keys(this.agents).indexOf($.params.username) < 0) {
         this.agents[$.params.username] = {
             // need endpoint
@@ -35,7 +38,7 @@ Dieting.prototype.newAgent = function ($) {
             color: this.color($.params.username)
         }
     }
-    $.end(this.agents[$.params.username].color)
+    $.json({ color: this.agents[$.params.username].color })
 }
 
 Dieting.prototype.color = function (key) {
@@ -47,7 +50,7 @@ Dieting.prototype.color = function (key) {
         var hex = c.toString(16);
             return hex.length == 1 ? "0" + hex : hex;
     }
-    length = Math.floor(key.length / 2)
+    length = Math.min(key.length, 6)
     while (length > 1) {
         color += componentToHex(key.readUIntLE(length - 1, 1))
         //key hash is taken backwards here for ease. still unique.
@@ -57,12 +60,11 @@ Dieting.prototype.color = function (key) {
 }
 
 Dieting.prototype.update = cadence(function (async, $) {
-    async(function () {
-        io.emit($.param.username, {
-            color: this.agents[$.param.username].color,
-            drawing: {}
+    //something like
+        io.emit(agent.username, {
+            color: agent.color,
+            drawing: {} //$.whatever
         })
-    })
 })
 
 Dieting.prototype.list = function ($) {

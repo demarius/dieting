@@ -2,10 +2,8 @@ var handlebars = require('handlebars')
 var fs = require('fs')
 var cadence = require('cadence')
 
-function Templater () {
-    this._landing = '<html><head> <title>{{title}}</title> </head> <body>\
-<canvas id="board" resize></canvas> </body>' // just in case `index.hbs` doesn't
-// come home tonight
+function Templater (url) {
+    this._landing, this._url = url
 
     handlebars.registerHelper('list_users', function (agents, options) {
         var out = '<ul>'
@@ -22,7 +20,7 @@ function Templater () {
 
 Templater.prototype.init = cadence(function (async) {
     async(function () {
-        fs.readFile('./pages/index.hbs', async())
+        fs.readFile('./pages/index.html', async())
     }, function (data) {
         this._landing = handlebars.compile(data.toString())
     })
@@ -30,7 +28,7 @@ Templater.prototype.init = cadence(function (async) {
 
 Templater.prototype.home = function (title) {
     var title = title ? title : 'Welcome to the Dieting board!'
-    return this._landing({title: title})
+    return this._landing({title: title, url: this._url})
 }
 
 Templater.prototype.list = function (agents) {
