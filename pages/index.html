@@ -12,31 +12,34 @@ window.onload = function () {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     paper.setup(canvas)
-    var path = new paper.Path(), tool = new Tool()
-    var start = new paper.Point(100, 100), socket = io()
+    var bandits = []
+    var path = new paper.Path(), tool = new Tool(), nativeColor
+    var socket = io()
 
     var nativeDraw = function (ev) {
+        path.lineTo(ev.point)
+        paper.view.draw()
+        path.moveTo(ev.point)
         socket.emit('drawing', {
             move: ev.point,
-            color: path.strokeColor
+            color: nativeColor
         })
-        path.lineTo(ev.point)
-        paper.view.draw();
-        path.moveTo = ev.point
     }
 
     var banditDraw = function (ev, color) {
-        var native_color = path.strokeColor
-        path.strokeColor = color
-        path.lineTo(ev.point)
-        paper.view.draw();
-        path.moveTo = ev.point
-        path.strokeColor = native_color
+        var bandit = bandits[color]
+        bandit.lineTo(ev)
+        paper.view.draw()
+        bandit.moveTo(ev)
     }
 
     socket.on('drawing', function (art) {
-        console.log(art)
-        banditDraw(art.move, art.color)
+        if (!bandits.hasOwnProperty(art.color))  {
+            bandits[art.color] = new Path()
+            bandits[art.color].strokeColor = art.color
+            bandits[art.color].moveTo(new Point(50, 50))
+        }
+        banditDraw(new Point(art.move.slice(1)), art.color)
     })
 
     $('.welcome button').on('click', function () {
@@ -45,18 +48,21 @@ window.onload = function () {
         if (username == 'anon') {
             path.strokeColor = 'black'
             // black, no socket
+            path.moveTo(new paper.Point(100, 100))
+            tool.onMouseMove = nativeDraw
         } else {
             $.ajax('/user/' + username, {
                 data: {
                     username: username
                 },
                 success: function (data) {
-                    path.strokeColor = data.color
+                    nativeColor = data.color // because vv
+                    path.strokeColor = data.color // <-- converts to otherness
+                    path.moveTo(new paper.Point(50, 50))
+                    tool.onMouseMove = nativeDraw
                 }
             })
         }
-        path.moveTo(start)
-        tool.onMouseMove = nativeDraw
     })
 }
 </script>

@@ -18,7 +18,6 @@ Dieting.prototype.init = cadence(function (async, url) {
     this.app.get('/:title', this.index.bind(this))
     this.app.get('/user/:username', this.newAgent.bind(this))
     this.app.get('/users/', this.list.bind(this))
-    //this.app.post('/user/:drawing', this.update.bind(this))
     this.io.on('connection', function (socket) {
         socket.on('drawing', function (art) {
             socket.broadcast.emit('drawing', art)
@@ -63,17 +62,6 @@ Dieting.prototype.color = function (key) {
         length--
     }
     return color
-}
-
-Dieting.prototype.update = function ($) {
-    //something like
-    console.log($.params)
-    /*
-        io.emit(agent.username, {
-            color: agent.color,
-            drawing: $.params.ev
-        })
-    */
 }
 
 Dieting.prototype.list = function ($) {
