@@ -9,6 +9,7 @@ function Dieting () {
 }
 
 Dieting.prototype.init = cadence(function (async, url) {
+    var that = this
     this.app.listen(url)
     this.io = require('socket.io')(this.app.server)
     this.app.get('/', function ($) {
@@ -17,7 +18,12 @@ Dieting.prototype.init = cadence(function (async, url) {
     this.app.get('/:title', this.index.bind(this))
     this.app.get('/user/:username', this.newAgent.bind(this))
     this.app.get('/users/', this.list.bind(this))
-    this.app.post('/user/:drawing', this.update.bind(this))
+    //this.app.post('/user/:drawing', this.update.bind(this))
+    this.io.on('connection', function (socket) {
+        socket.on('drawing', function (art) {
+            socket.broadcast.emit('drawing', art)
+        })
+    })
 
     async(function () {
         this.templates = new templater(url)
@@ -59,13 +65,16 @@ Dieting.prototype.color = function (key) {
     return color
 }
 
-Dieting.prototype.update = cadence(function (async, $) {
+Dieting.prototype.update = function ($) {
     //something like
+    console.log($.params)
+    /*
         io.emit(agent.username, {
             color: agent.color,
-            drawing: {} //$.whatever
+            drawing: $.params.ev
         })
-})
+    */
+}
 
 Dieting.prototype.list = function ($) {
     $.end(this.templates.list(this.agents))

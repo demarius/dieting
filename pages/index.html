@@ -35,7 +35,8 @@ window.onload = function () {
     }
 
     socket.on('drawing', function (art) {
-        banditDraw(art.ev, art.color)
+        console.log(art)
+        banditDraw(art.move, art.color)
     })
 
     $('.welcome button').on('click', function () {

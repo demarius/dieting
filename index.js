@@ -3,4 +3,4 @@ var dieter = require('./dieting/dieting')
 
 dieter = new dieter.Dieting()
 
-dieter.init('http://localhost:8000', function () {console.log(arguments)})
+dieter.init('http://localhost:8000', function () {})
