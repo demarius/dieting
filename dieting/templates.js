@@ -7,10 +7,10 @@ function Templater (url) {
 
     handlebars.registerHelper('list_users', function (agents, options) {
         var out = '<ul>'
-        for (var key in Object.keys(agents)) {
+        for (var key in agents) {
             out += '\
             <li>' + key + '\
-            : ' + options.fn(agents[key].color) + '\
+            : ' + agents[key].color + '\
             </li>'
         }
         return out + '</ul>'
@@ -33,7 +33,7 @@ Templater.prototype.home = function (title) {
 
 Templater.prototype.list = function (agents) {
     // create page with username -> color table
-    return this._users(agents)
+    return this._users({agents: agents})
 }
 
 module.exports = Templater
