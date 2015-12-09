@@ -9,12 +9,10 @@ function Templater (url) {
     handlebars.registerHelper('list_users', function (agents, options) {
         var out = '<ul>'
         for (var key in agents) {
-            out += '\
-            <li>' + key + '\
-            : ' + agents[key].color + '\
-            </li>'
+            out += '<li>' + key + ' : ' + agents[key].color + ' </li>'
         }
-        return out + '</ul>'
+        out += '</ul>'
+        return out
     })
     this._users = handlebars.compile('<div>{{list_users agents}}</div>')
 }

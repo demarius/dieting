@@ -65,7 +65,7 @@ Dieting.prototype.color = function (key) {
 }
 
 Dieting.prototype.list = function ($) {
-    $.end(this.templates.list(this.agents))
+    $.html(this.templates.list(this.agents))
 }
 
 exports.Dieting = Dieting
