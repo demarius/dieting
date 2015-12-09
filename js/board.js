@@ -1,11 +1,3 @@
-<html>
-<head>
-<title>{{title}}</title>
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script type="text/javascript"
-src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.25/paper-core.js"></script>
-<script type="text/javascript" src="{{url}}/socket.io/socket.io.js"></script>
-<script>
 paper.install(window)
 window.onload = function () {
     var canvas = document.getElementById('board')
@@ -57,7 +49,7 @@ window.onload = function () {
                 },
                 success: function (data) {
                     nativeColor = data.color // because vv
-                    path.strokeColor = data.color // <-- converts to otherness
+                    path.strokeColor = data.color // <- converts to otherness
                     path.moveTo(new paper.Point(50, 50))
                     tool.onMouseMove = nativeDraw
                 }
@@ -65,13 +57,3 @@ window.onload = function () {
         }
     })
 }
-</script>
-</head>
-<body>
-    <div class='welcome'>
-        <label>Username: <input type="text" name="username" /></label>
-        <button>Start</button>
-    </div>
-    <canvas id="board" resize></canvas>
-</body>
-</html>
