@@ -2,6 +2,7 @@ var server = require('diet')
 var cadence = require('cadence')
 var fnv = require('b-tree/benchmark/fnv')
 var templater = require('./templates')
+var crypto = require('crypto')
 
 function Dieting () {
     this.app = server()
@@ -35,10 +36,8 @@ Dieting.prototype.index = function ($) {
 }
 
 Dieting.prototype.newAgent = function ($) {
-    //need to use socket instead
     if (Object.keys(this.agents).indexOf($.params.username) < 0) {
         this.agents[$.params.username] = {
-            // need endpoint
             host: $.url.hostname,
             color: this.color($.params.username)
         }
@@ -48,6 +47,7 @@ Dieting.prototype.newAgent = function ($) {
 
 Dieting.prototype.color = function (key) {
     // hash to 0-255
+    key += crypto.randomBytes(16).toString()
     var color = '#', length = Buffer.byteLength(key), key = fnv(new Buffer(key), 0, length)
 
     function componentToHex(c) {
@@ -56,7 +56,7 @@ Dieting.prototype.color = function (key) {
             return hex.length == 1 ? "0" + hex : hex;
     }
     length = Math.min(key.length, 6)
-    while (length > 1) {
+    while (length > 2) {
         color += componentToHex(key.readUIntLE(length - 1, 1))
         //key hash is taken backwards here for ease. still unique.
         length--
