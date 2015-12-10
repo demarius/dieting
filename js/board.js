@@ -37,6 +37,7 @@ window.onload = function () {
     $('.welcome button').on('click', function () {
         var username = $('.welcome input').val() || 'anon'
         $('.welcome').remove()
+        $('body').css('cursor', 'none')
         if (username == 'anon') {
             path.strokeColor = 'black'
             // black, no socket
