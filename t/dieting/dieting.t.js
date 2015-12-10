@@ -1,4 +1,4 @@
-require('proof')(3, require('cadence')(prove))
+require('proof')(4, require('cadence')(prove))
 
 function prove (async, assert) {
     var diet = require('../../dieting/dieting')
@@ -7,10 +7,6 @@ function prove (async, assert) {
     async(function () {
         diet.init('http://localhost:8000', async())
     }, function () {
-        ua.fetch({
-        url: 'http://localhost:8000/users/'}, async())
-    }, function (body) {
-        console.log(body.toString())
         ua.fetch({
         url: 'http://localhost:8000/blah'}, async())
     }, function (body, res) {
@@ -27,5 +23,6 @@ function prove (async, assert) {
         ua.fetch({
         url: 'http://localhost:8000/users/'}, async())
     }, function (body, res) {
+        assert(body.toString().indexOf('color: #428ca3'), 'got list')
     })
 }
