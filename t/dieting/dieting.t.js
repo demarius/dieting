@@ -8,6 +8,10 @@ function prove (async, assert) {
         diet.init('http://localhost:8000', async())
     }, function () {
         ua.fetch({
+        url: 'http://localhost:8000/users/'}, async())
+    }, function (body) {
+        console.log(body.toString())
+        ua.fetch({
         url: 'http://localhost:8000/blah'}, async())
     }, function (body, res) {
         assert(body.toString().indexOf('blah'), 'title set')
@@ -20,5 +24,8 @@ function prove (async, assert) {
     }, function (body, res) {
         assert(body.toString().indexOf('borkendogschliefenewfipnepw') &&
         body.toString().indexOf('#428ca3'), 'got div')
+        ua.fetch({
+        url: 'http://localhost:8000/users/'}, async())
+    }, function (body, res) {
     })
 }

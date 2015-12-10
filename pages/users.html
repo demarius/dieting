@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>Users</title>
+</head>
+<body>
+    <div class='users_table'>
+        <% for(var key in users) { %>
+            <li>
+                <a style='color: <%= users[key].color %>'>
+                    <%= key %>
+                </a>
+            </li>
+        <%}%>
+    </div>
+</body>
+</html>
