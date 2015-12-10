@@ -42,7 +42,10 @@ window.onload = function () {
             path.strokeColor = 'black'
             // black, no socket
             path.moveTo(new paper.Point(100, 100))
-            tool.onMouseMove = nativeDraw
+            bandits['black'] = path
+            tool.onMouseMove = function (ev) {
+                banditDraw(ev.point, 'black')
+            }
         } else {
             $.ajax('/user/' + username, {
                 data: {
