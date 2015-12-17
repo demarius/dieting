@@ -8,7 +8,7 @@ function Templater (url) {
 
 Templater.prototype.init = cadence(function (async) {
     async(function () {
-        fs.readFile('./pages/ejs.html', async())
+        fs.readFile('./pages/index.html', async())
         fs.readFile('./js/board.js', async())
         fs.readFile('./pages/users.html', async())
     }, function (home, src, users) {
