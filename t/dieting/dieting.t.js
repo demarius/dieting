@@ -14,12 +14,11 @@ function prove (async, assert) {
         ua.fetch({
         url: 'http://localhost:8000/user/borkendogschliefenewfipnepw'}, async())
     }, function (body, res) {
-        assert(body.color, '#428ca3', 'got hex')
+        assert(body.color.indexOf('#') > -1, 'got hex')
         ua.fetch({
         url: 'http://localhost:8000/users/'}, async())
     }, function (body, res) {
-        assert(body.toString().indexOf('borkendogschliefenewfipnepw') &&
-        body.toString().indexOf('#428ca3'), 'got div')
+        assert(body.toString().indexOf('borkendogschliefenewfipnepw'), 'got div')
         ua.fetch({
         url: 'http://localhost:8000/users/'}, async())
     }, function (body, res) {
