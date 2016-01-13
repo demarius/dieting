@@ -23,5 +23,7 @@ function prove (async, assert) {
         url: 'http://localhost:8000/users/'}, async())
     }, function (body, res) {
         assert(body.toString().indexOf('color: #428ca3'), 'got list')
+        delete isset
+        delete index
     })
 }
