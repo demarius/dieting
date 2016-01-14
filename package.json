@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "b-tree": "0.0.41",
-    "cadence": "0.4.1",
+    "cadence": "0.4.3",
     "diet": "0.9.29",
     "ejs": "^2.3.4",
     "handlebars": "^4.0.5",
