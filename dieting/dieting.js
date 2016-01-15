@@ -31,6 +31,10 @@ Dieting.prototype.init = cadence(function (async, url) {
     })
 })
 
+Dieting.prototype.end = cadence(function (async) {
+    this.app.close(async())
+})
+
 Dieting.prototype.index = function ($) {
     $.html(this.templates.home($.params.title))
 }
