@@ -1,4 +1,4 @@
-require('proof')(4, require('cadence')(prove))
+require('proof')(5, require('cadence')(prove))
 
 function prove (async, assert) {
     var diet = require('../../dieting/dieting')
@@ -23,6 +23,9 @@ function prove (async, assert) {
         url: 'http://localhost:8000/users/'}, async())
     }, function (body, res) {
         assert(body.toString().indexOf('color: #428ca3'), 'got list')
+        diet.end(async())
+    }, function () {
+        assert(true, 'closed')
         delete isset
         delete index
     })
