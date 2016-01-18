@@ -32,7 +32,7 @@ Dieting.prototype.init = cadence(function (async, url) {
 })
 
 Dieting.prototype.end = cadence(function (async) {
-    this.app.close(async())
+    this.app.server.close(async())
 })
 
 Dieting.prototype.index = function ($) {
