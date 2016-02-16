@@ -1,6 +1,7 @@
 var server = require('diet')
 var cadence = require('cadence')
 var fnv = require('b-tree/benchmark/fnv')
+var hashfnv = require('hash.fnv')
 var templater = require('./templates')
 var crypto = require('crypto')
 
