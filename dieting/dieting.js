@@ -1,6 +1,5 @@
 var server = require('diet')
 var cadence = require('cadence')
-var fnv = require('b-tree/benchmark/fnv')
 var hashfnv = require('hash.fnv')
 var templater = require('./templates')
 var crypto = require('crypto')
@@ -53,7 +52,7 @@ Dieting.prototype.newAgent = function ($) {
 Dieting.prototype.color = function (key) {
     // hash to 0-255
     key += crypto.randomBytes(16).toString()
-    var color = '#', length = Buffer.byteLength(key), key = fnv(new Buffer(key), 0, length)
+    var color = '#', length = Buffer.byteLength(key), key = hashfnv(0, new Buffer(key), 0, length)
 
     function componentToHex(c) {
     /* http://stackoverflow.com/a/5624139 */
