@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "cadence": "0.4.3",
-    "diet": "0.9.28",
+    "diet": "0.10",
     "ejs": "^2.3.4",
     "handlebars": "^4.0.5",
     "proof": "0.0.56",
