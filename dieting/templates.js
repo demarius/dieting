@@ -31,7 +31,7 @@ Templater.prototype.list = function (users) {
     if (Object.keys(users).length < 1) {
         users = { 'No users yet!': 'black' }
     }
-    return this._users({users: users})
+    return this._users({ users: users })
 }
 
 module.exports = Templater
