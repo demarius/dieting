@@ -10,7 +10,6 @@ function Dieting () {
 }
 
 Dieting.prototype.init = cadence(function (async, url) {
-    var that = this
     this.app.listen(url)
     this.io = require('socket.io')(this.app.server)
     this.app.get('/', function ($) {
